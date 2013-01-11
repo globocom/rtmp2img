@@ -1,0 +1,5 @@
+*.pyc
+*.swp
+tests/data
+tests/logs
+__pycache__
