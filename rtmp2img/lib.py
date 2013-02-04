@@ -22,15 +22,23 @@ class Shooter(object):
         app, _, stream = path.rpartition('/')
         return (host, app, stream)
 
+    def get_rtmpdump_extra_args(self):
+        return []
+
     def get_rtmpdump_command_args(self, url, output_file):
         host, app, stream = self.get_url_params(url)
-        return ["--app", app,
+
+        extra_args = self.get_rtmpdump_extra_args()
+
+        args = ["--app", app,
                 "--host", host,
                 "--port", str(self.rtmpdump_defaults['port']),
                 "--playpath", stream,
                 "--stop", str(self.rtmpdump_defaults['stop_time']),
                 "--live",
                 "-o", output_file]
+
+        return args + extra_args
 
     def call_rtmpdump(self, url, output_file_path):
         args = self.get_rtmpdump_command_args(url, output_file_path)
@@ -43,11 +51,17 @@ class Shooter(object):
         else:
             self.logger.debug("rtmpdump OK")
 
+    def get_ffmpeg_extra_args(self):
+        return []
 
     def get_ffmpeg_command_args(self, input_file_path, output_file_path):
-        return ['-i', input_file_path,
+        extra_args = self.get_ffmpeg_extra_args()
+
+        args = ['-i', input_file_path,
                 '-vframes', '1',
                 '-y', output_file_path]
+
+        return extra_args + args
 
     def call_ffmpeg(self, input_file_path, output_file_path):
         ffmpeg_args = self.get_ffmpeg_command_args(input_file_path, output_file_path)
