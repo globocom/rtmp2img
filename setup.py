@@ -10,7 +10,7 @@ setup(
     long_description=README,
     author='Globo.com',
     url='https://github.com/globocom/rtmp2img',
-    version='0.1.2',
+    version='0.1.2.1',
     zip_safe=False,
     include_package_data=True,
     entry_points={
