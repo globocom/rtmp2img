@@ -134,3 +134,13 @@ def test_save_image_should_not_create_rtmpdump_temp_file_if_rtmpdump_fail(monkey
         pass
 
     assert tmpdir.listdir() == []
+
+def test_save_image_should_work_with_rtmpdump_temp_file_param(tmpdir):
+    url = LIVE_RTMP_URL
+    output_file_path = str(tmpdir.join('out.jpg'))
+    temp_file_path = str(tmpdir.join('temp.flv'))
+
+    shooter = Shooter(**test_shooter_args)
+    shooter.save_image(url, output_file_path, temp_file_path)
+
+    assert os.stat(output_file_path).st_size > 0, "output JPG is broken"

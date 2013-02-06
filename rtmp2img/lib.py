@@ -74,8 +74,8 @@ class Shooter(object):
         else:
             self.logger.debug('ffmpeg OK')
 
-    def save_image(self, url, output_file_path):
-        rtmpdump_temp_file = tempfile.mktemp()
+    def save_image(self, url, output_file_path, rtmpdump_temp_file=None):
+        rtmpdump_temp_file = tempfile.mktemp() if rtmpdump_temp_file is None else rtmpdump_temp_file
         self.call_rtmpdump(url, rtmpdump_temp_file)
         try:
             self.call_ffmpeg(rtmpdump_temp_file, output_file_path)
