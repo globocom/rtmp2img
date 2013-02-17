@@ -6,11 +6,12 @@ from lib import Shooter
 def main():
     parser = argparse.ArgumentParser('Save images from live videos')
     parser.add_argument('--output', dest="output_file", help="path to output file", required=True)
-    parser.add_argument('--log', dest="log_path", help="log file path", required=True)
     parser.add_argument('--url', dest="midia_url", help="rtmp url", required=True)
 
-    parser.add_argument('--ffmpeg', dest='ffmpeg_bin', help='path to ffmpeg', required=True)
-    parser.add_argument('--rtmpdump', dest='rtmpdump_bin', help='path to rtmpdump', required=True)
+    parser.add_argument('--log', dest="log_path", help="log file path", default=None)
+
+    parser.add_argument('--ffmpeg', dest='ffmpeg_bin', help='path to ffmpeg', default='ffmpeg')
+    parser.add_argument('--rtmpdump', dest='rtmpdump_bin', help='path to rtmpdump', default='rtmpdump')
 
     args = parser.parse_args()
 
@@ -23,7 +24,7 @@ def main():
 
 
 def get_logger(log_path):
-    handler = logging.FileHandler(log_path)
+    handler = logging.StreamHandler() if log_path is None else logging.FileHandler(log_path)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     handler.setFormatter(formatter)
     logger = logging.getLogger("rtmp2img")
