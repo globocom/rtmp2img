@@ -21,6 +21,11 @@ def create_logger():
 logger = create_logger()
 
 
+class FakeShooter(Shooter):
+    def get_ffmpeg_extra_args(self):
+        return ['-loglevel', 'debug']
+
+
 test_shooter_args = {
     'logger': logger,
     'ffmpeg_bin': 'ffmpeg',
@@ -77,6 +82,16 @@ def test_ffmpeg_command_args():
 
     assert result == ['-i', '/path/to/rtmpdump/output.flv',
                       '-vframes', '1',
+                      '-y', '/path/to/image.jpg']
+
+def test_ffmpeg_extra_args():
+    shooter = FakeShooter(**test_shooter_args)
+
+    result = shooter.get_ffmpeg_command_args('/path/to/rtmpdump/output.flv', '/path/to/image.jpg')
+
+    assert result == ['-i', '/path/to/rtmpdump/output.flv',
+                      '-vframes', '1',
+                      '-loglevel', 'debug',
                       '-y', '/path/to/image.jpg']
 
 

@@ -57,11 +57,12 @@ class Shooter(object):
     def get_ffmpeg_command_args(self, input_file_path, output_file_path):
         extra_args = self.get_ffmpeg_extra_args()
 
-        args = ['-i', input_file_path,
-                '-vframes', '1',
-                '-y', output_file_path]
+        args = (['-i', input_file_path,
+                 '-vframes', '1'] +
+                extra_args +
+                ['-y', output_file_path])
 
-        return extra_args + args
+        return args
 
     def call_ffmpeg(self, input_file_path, output_file_path):
         ffmpeg_args = self.get_ffmpeg_command_args(input_file_path, output_file_path)
